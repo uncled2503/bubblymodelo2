@@ -2,8 +2,16 @@
 
 import { Button } from "./ui/button";
 import { Star, CheckCircle, Flame, Clock } from "lucide-react";
+import { ProductImageGallery } from "./ProductImageGallery";
 
 export const Hero = () => {
+  const productImages = [
+    { src: "/images/produto-caixa.png", alt: "Caixa do produto Bomba de Banho Surpresa Oceano" },
+    { src: "/images/produto-uso.png", alt: "Criança usando a bomba de banho na banheira" },
+    { src: "/images/produto-dimensoes.png", alt: "Dimensões da caixa e das bombas de banho" },
+    { src: "/images/produto-variedade.png", alt: "Variedade de surpresas e bombas de banho" },
+  ];
+
   return (
     <section id="inicio" className="container max-w-6xl mx-auto py-12 md:py-20">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
@@ -58,11 +66,7 @@ export const Hero = () => {
           </div>
         </div>
         <div className="order-1 md:order-2">
-          <img
-            src="/images/produto-caixa.png"
-            alt="Bomba de Banho Surpresa Oceano"
-            className="rounded-2xl shadow-2xl w-full"
-          />
+          <ProductImageGallery images={productImages} />
         </div>
       </div>
     </section>
