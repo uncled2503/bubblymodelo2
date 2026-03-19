@@ -1,11 +1,23 @@
 "use client";
 
 import { AlertTriangle } from "lucide-react";
+import { LoopingVideo } from "./LoopingVideo";
 
 export const FeatureSections = () => {
   return (
     <section className="py-16 bg-white">
       <div className="container max-w-6xl mx-auto space-y-20">
+        {/* Como Funciona Section */}
+        <div className="text-center">
+          <h2 className="text-3xl font-bold mb-4">Como Funciona</h2>
+          <div className="max-w-3xl mx-auto">
+            <LoopingVideo src="/videos/how-it-works.mp4" />
+          </div>
+          <p className="text-gray-600 text-lg mt-6 max-w-3xl mx-auto">
+            É simples! Basta encher a banheira, colocar uma de nossas bombas de banho mágicas e observar a efervescência colorida. Em instantes, uma surpresa divertida de um animal marinho aparecerá, transformando a hora do banho em uma aventura inesquecível.
+          </p>
+        </div>
+
         {/* Section 1: Hora do Banho, Reinventada */}
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
