@@ -67,9 +67,10 @@ serve(async (req) => {
 
     const responseData = await response.json();
 
-    if (!response.ok || responseData.status !== 'success') {
-      console.error("[create-pix-payment] Error from Royal Banking API:", responseData);
-      return new Response(JSON.stringify({ error: responseData.message || "Failed to create PIX payment." }), {
+    if (!response.ok || responseData.status !== 'success' || !responseData.data) {
+      console.error("[create-pix-payment] Error or invalid data from Royal Banking API:", responseData);
+      const errorMessage = responseData.message || "Failed to create PIX payment. Invalid response from gateway.";
+      return new Response(JSON.stringify({ error: errorMessage }), {
         status: response.status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });

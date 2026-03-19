@@ -94,10 +94,18 @@ const Checkout = () => {
         }
     });
 
-    if (paymentError || paymentData.error) {
+    if (paymentError) {
         dismissToast(paymentToastId);
-        showError(paymentData.error || "Não foi possível gerar o PIX. Verifique seus dados.");
-        console.error("Error invoking payment function:", paymentError || paymentData.error);
+        showError("Ocorreu um erro ao gerar o PIX. Tente novamente.");
+        console.error("Error invoking payment function:", paymentError);
+        return;
+    }
+
+    if (!paymentData || paymentData.error) {
+        dismissToast(paymentToastId);
+        const errorMessage = paymentData?.error || "Não foi possível gerar o PIX. Verifique seus dados.";
+        showError(errorMessage);
+        console.error("Error from payment function:", errorMessage);
         return;
     }
 
