@@ -40,6 +40,8 @@ const Login = () => {
                     appearance={{ theme: ThemeSupa }}
                     providers={[]}
                     theme="light"
+                    view="sign_in"
+                    showLinks={false}
                 />
             </div>
         </div>
