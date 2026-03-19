@@ -45,6 +45,7 @@ serve(async (req) => {
     const payload = {
       "api-key": ROYAL_BANKING_API_KEY,
       amount: amount,
+      description: "Cobrança DropShipping",
       client: {
         name: client.name,
         document: cleanDocument,
