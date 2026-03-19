@@ -56,8 +56,9 @@ serve(async (req) => {
 
     const responseData = await response.json();
 
-    if (!response.ok || responseData.status !== 'success') {
-      console.error("[create-pix-payment] Error from Royal Banking API:", responseData);
+    // Updated validation to check for the actual data in the response
+    if (!response.ok || responseData.status !== 'success' || !responseData.idTransaction) {
+      console.error("[create-pix-payment] Error or invalid data from Royal Banking API:", responseData);
       const errorMessage = responseData.message || "Failed to create PIX payment.";
       return new Response(JSON.stringify({ error: errorMessage }), {
         status: 400,
