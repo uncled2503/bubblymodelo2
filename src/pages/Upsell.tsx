@@ -109,7 +109,7 @@ const Upsell = () => {
         
         dismissToast(toastId);
         
-        navigate('/payment', { state: { paymentData, leadId } });
+        navigate('/payment', { state: { paymentData, leadId, isUpsell: true } });
     };
 
     const allOffersShown = currentOfferIndex >= upsellOffers.length;

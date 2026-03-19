@@ -13,8 +13,8 @@ const Payment = () => {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
 
-  // Os dados do PIX e o ID do lead são passados através do state da navegação
-  const { paymentData, leadId } = location.state || {};
+  // Os dados do PIX, o ID do lead e a flag de upsell são passados através do state da navegação
+  const { paymentData, leadId, isUpsell } = location.state || {};
 
   if (!paymentData || !leadId) {
     return (
@@ -36,9 +36,13 @@ const Payment = () => {
   };
 
   const handlePaymentConfirmation = () => {
-    // Em um cenário real, um webhook confirmaria o pagamento.
-    // Aqui, simplesmente avançamos para a próxima etapa.
-    navigate(`/upsell/${leadId}`);
+    // Se for um pagamento de upsell, vamos para a página de agradecimento.
+    // Caso contrário, vamos para a página de upsell.
+    if (isUpsell) {
+      navigate('/thank-you');
+    } else {
+      navigate(`/upsell/${leadId}`);
+    }
   };
 
   return (
