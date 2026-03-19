@@ -41,7 +41,9 @@ export const FeatureSections = () => {
 
         {/* Guarantee Section */}
         <div className="bg-teal-50 border-2 border-dashed border-teal-300 rounded-2xl p-8 text-center">
-            <ShieldCheck className="h-16 w-16 text-teal-500 mx-auto mb-4" />
+            <div className="perspective-1000">
+                <ShieldCheck className="h-16 w-16 text-teal-500 mx-auto mb-4 animate-rotate-3d transform-style-3d" />
+            </div>
             <h2 className="text-3xl font-bold text-teal-800 mb-2">Garantia Blindada de 30 Dias</h2>
             <p className="text-teal-700 text-lg max-w-3xl mx-auto">
                 Sua felicidade é nossa prioridade! Se por qualquer motivo você ou seu pequeno não amarem o produto, basta nos contatar em até 30 dias para um reembolso completo, sem complicações e sem perguntas. <span className="font-bold">Risco zero para você!</span>

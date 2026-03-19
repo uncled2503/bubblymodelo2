@@ -143,6 +143,13 @@
     @apply absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent;
     animation: shine 5s infinite;
   }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
 }
 
 @keyframes shine {
