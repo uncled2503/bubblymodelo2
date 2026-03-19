@@ -109,7 +109,7 @@ const Checkout = () => {
         return;
     }
 
-    if (!paymentData.idTransaction || !paymentData.paymentCode || !paymentData.qrCodeBase64) {
+    if (!paymentData.idTransaction || !paymentData.paymentCode || !paymentData.paymentCodeBase64) {
         dismissToast(paymentToastId);
         showError("Resposta inválida do gateway de pagamento. Tente novamente.");
         console.error("Invalid payment data received:", paymentData);

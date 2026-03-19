@@ -55,7 +55,7 @@ const Payment = () => {
           <CardContent className="flex flex-col items-center gap-6">
             <div className="p-4 bg-white border rounded-lg">
               <img
-                src={`data:image/png;base64,${paymentData.qrCodeBase64}`}
+                src={paymentData.paymentCodeBase64}
                 alt="PIX QR Code"
                 className="w-64 h-64"
               />
