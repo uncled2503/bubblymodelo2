@@ -9,8 +9,8 @@ export const Footer = () => {
       <div className="container max-w-6xl mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <img src="/images/logotipo.png" alt="Reino do Brinquedo" className="h-20" />
-            <p className="mt-2 text-gray-400">Transformando o ordinário em extraordinário.</p>
+            <img src="/images/logotipo.png" alt="Tika Toys" className="h-24" />
+            <p className="mt-2 text-gray-400">Unleashing a World of Joy!</p>
           </div>
           <div>
             <h4 className="font-semibold">Links Rápidos</h4>
@@ -38,7 +38,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} Reino do Brinquedo. Todos os direitos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Tika Toys. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
