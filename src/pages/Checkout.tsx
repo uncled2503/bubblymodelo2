@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { supabase } from "@/integrations/supabase/client";
+import { showSuccess, showError, showLoading, dismissToast } from "@/utils/toast";
 
 const checkoutSchema = z.object({
   fullName: z.string().min(3, "Nome completo é obrigatório"),
@@ -42,9 +44,32 @@ const Checkout = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof checkoutSchema>) {
-    console.log("Checkout data:", values);
-    alert("Pedido recebido! (Verifique o console para os dados)");
+  async function onSubmit(values: z.infer<typeof checkoutSchema>) {
+    const toastId = showLoading("Enviando seu pedido...");
+    
+    const { error } = await supabase.from("leads").insert({
+        full_name: values.fullName,
+        cpf: values.cpf,
+        email: values.email,
+        phone: values.phone,
+        zip_code: values.zipCode,
+        street: values.street,
+        number: values.number,
+        complement: values.complement,
+        neighborhood: values.neighborhood,
+        city: values.city,
+        state: values.state,
+    });
+
+    dismissToast(toastId);
+
+    if (error) {
+        showError("Ocorreu um erro ao enviar seu pedido. Tente novamente.");
+        console.error("Error inserting lead:", error);
+    } else {
+        showSuccess("Pedido recebido com sucesso!");
+        form.reset();
+    }
   }
 
   return (
