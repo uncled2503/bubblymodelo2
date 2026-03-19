@@ -51,7 +51,9 @@ const AdminDashboard = () => {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Data</TableHead>
+                                    <TableHead>Hora</TableHead>
                                     <TableHead>Nome</TableHead>
+                                    <TableHead>CPF</TableHead>
                                     <TableHead>Email</TableHead>
                                     <TableHead>Telefone</TableHead>
                                 </TableRow>
@@ -60,7 +62,9 @@ const AdminDashboard = () => {
                                 {leads.map((lead) => (
                                     <TableRow key={lead.id}>
                                         <TableCell>{new Date(lead.created_at).toLocaleDateString()}</TableCell>
+                                        <TableCell>{new Date(lead.created_at).toLocaleTimeString()}</TableCell>
                                         <TableCell>{lead.full_name}</TableCell>
+                                        <TableCell>{lead.cpf}</TableCell>
                                         <TableCell>{lead.email}</TableCell>
                                         <TableCell>{lead.phone}</TableCell>
                                     </TableRow>
