@@ -14,7 +14,7 @@ import { showSuccess, showError, showLoading, dismissToast } from "@/utils/toast
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatCPF, formatPhone, formatZipCode } from "@/lib/formatters";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { kits } from "@/data/kits";
 
 const orderBumps = [
@@ -69,15 +69,14 @@ const Checkout = () => {
     },
   });
 
-  const [total, setTotal] = useState(basePrice);
-  const selectedBumpsIds = form.watch("orderBumps") || [];
+  const selectedBumpsIds = form.watch("orderBumps");
 
-  useEffect(() => {
-    const bumpsTotal = selectedBumpsIds.reduce((acc, bumpId) => {
+  const total = useMemo(() => {
+    const bumpsTotal = (selectedBumpsIds || []).reduce((acc, bumpId) => {
         const item = orderBumps.find(ob => ob.id === bumpId);
         return acc + (item ? item.price : 0);
     }, 0);
-    setTotal(basePrice + bumpsTotal);
+    return basePrice + bumpsTotal;
   }, [selectedBumpsIds, basePrice]);
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
@@ -164,30 +163,32 @@ const Checkout = () => {
                       {orderBumps.map((item) => {
                         const isChecked = field.value?.includes(item.id);
                         return (
-                          <div
+                          <FormLabel
                             key={item.id}
+                            htmlFor={item.id}
                             className={`flex flex-row items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
-                            onClick={() => {
-                                const newValue = isChecked
-                                ? field.value?.filter((value) => value !== item.id)
-                                : [...(field.value || []), item.id];
-                                field.onChange(newValue);
-                            }}
                           >
                             <img src={item.image} alt={item.title} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
                             <div className="flex-grow">
-                                <FormLabel className="font-bold text-lg text-gray-800 cursor-pointer">
+                                <span className="font-bold text-lg text-gray-800">
                                     {item.title}
-                                </FormLabel>
+                                </span>
                                 <p className="text-gray-600">{item.description} <span className="font-bold text-green-600">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
                             </div>
                             <FormControl>
                                 <Checkbox
+                                    id={item.id}
                                     checked={isChecked}
+                                    onCheckedChange={(checked) => {
+                                        const newValue = checked
+                                        ? [...(field.value || []), item.id]
+                                        : field.value?.filter((value) => value !== item.id);
+                                        field.onChange(newValue);
+                                    }}
                                     className="h-6 w-6"
                                 />
                             </FormControl>
-                          </div>
+                          </FormLabel>
                         )
                       })}
                       <FormMessage />
@@ -201,7 +202,7 @@ const Checkout = () => {
                         <span>{selectedKit.title}</span>
                         <span className="font-semibold">{basePrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                     </div>
-                    {selectedBumpsIds.map(bumpId => {
+                    {selectedBumpsIds?.map(bumpId => {
                         const item = orderBumps.find(ob => ob.id === bumpId);
                         if (!item) return null;
                         return (
