@@ -2,6 +2,7 @@
 
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+import { Link } from "react-router-dom";
 
 const OfferCard = ({ title, price, originalPrice, save, bestChoice = false, items }) => (
     <div className={`border rounded-2xl p-6 text-center relative transition-transform hover:scale-105 ${bestChoice ? 'border-teal-500 ring-4 ring-teal-100' : 'border-gray-200'}`}>
@@ -13,7 +14,9 @@ const OfferCard = ({ title, price, originalPrice, save, bestChoice = false, item
             <p className="text-gray-400 line-through">R$ {originalPrice}</p>
         </div>
         {save && <p className="text-green-600 font-semibold mb-4">Você economiza R$ {save}!</p>}
-        <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">Comprar Agora</Button>
+        <Link to="/checkout">
+            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">Comprar Agora</Button>
+        </Link>
     </div>
 )
 

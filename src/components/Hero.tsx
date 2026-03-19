@@ -3,6 +3,7 @@
 import { Button } from "./ui/button";
 import { Star, CheckCircle, Flame, Clock } from "lucide-react";
 import { ProductImageGallery } from "./ProductImageGallery";
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   const productImages = [
@@ -47,9 +48,11 @@ export const Hero = () => {
             <span className="text-xl text-gray-400 line-through ml-2">R$ 149,90</span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg w-full sm:w-auto animate-pulse">
-              COMPRAR AGORA
-            </Button>
+            <Link to="/checkout">
+              <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg w-full sm:w-auto animate-pulse">
+                COMPRAR AGORA
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" className="w-full sm:w-auto">
               Adicionar ao carrinho
             </Button>
