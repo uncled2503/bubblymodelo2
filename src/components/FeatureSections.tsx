@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ShieldCheck } from "lucide-react";
 import { LoopingVideo } from "./LoopingVideo";
 
 export const FeatureSections = () => {
@@ -32,10 +32,11 @@ export const FeatureSections = () => {
         </div>
 
         {/* Guarantee Section */}
-        <div className="text-center">
-            <h2 className="text-3xl font-bold mb-4">Garantia de 30 Dias</h2>
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-            Nós garantimos nossos produtos com uma garantia de 30 dias sem riscos. Se você não ficar completamente encantado com seu pedido, simplesmente devolva-o para um reembolso total (sem perguntas).
+        <div className="bg-teal-50 border-2 border-dashed border-teal-300 rounded-2xl p-8 text-center">
+            <ShieldCheck className="h-16 w-16 text-teal-500 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-teal-800 mb-2">Garantia Blindada de 30 Dias</h2>
+            <p className="text-teal-700 text-lg max-w-3xl mx-auto">
+                Sua felicidade é nossa prioridade! Se por qualquer motivo você ou seu pequeno não amarem o produto, basta nos contatar em até 30 dias para um reembolso completo, sem complicações e sem perguntas. <span className="font-bold">Risco zero para você!</span>
             </p>
         </div>
 
