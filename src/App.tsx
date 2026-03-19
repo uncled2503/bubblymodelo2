@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Upsell from "./pages/Upsell";
 import ThankYou from "./pages/ThankYou";
 import Payment from "./pages/Payment";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Index />} />
