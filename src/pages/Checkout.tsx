@@ -11,10 +11,11 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { supabase } from "@/integrations/supabase/client";
 import { showSuccess, showError, showLoading, dismissToast } from "@/utils/toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatCPF, formatPhone, formatZipCode } from "@/lib/formatters";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { kits } from "@/data/kits";
 
 const orderBumps = [
     { id: "espuma_banho", title: "Espuma Mágica que Muda de Cor", description: "Adicione por apenas", price: 19.90, image: "/images/order-bumps/espuma.png" },
@@ -40,6 +41,16 @@ const checkoutSchema = z.object({
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const selectedKit = useMemo(() => {
+    const kitId = searchParams.get("kitId");
+    const foundKit = kits.find(k => k.id.toString() === kitId);
+    return foundKit || kits.find(k => k.bestChoice) || kits[1];
+  }, [searchParams]);
+
+  const basePrice = useMemo(() => parseFloat(selectedKit.price.replace(',', '.')), [selectedKit]);
+
   const form = useForm<z.infer<typeof checkoutSchema>>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
@@ -58,8 +69,7 @@ const Checkout = () => {
     },
   });
 
-  const BASE_PRICE = 175.90; // Preço do "Kit Aventura em Dobro"
-  const [total, setTotal] = useState(BASE_PRICE);
+  const [total, setTotal] = useState(basePrice);
   const selectedBumpsIds = form.watch("orderBumps") || [];
 
   useEffect(() => {
@@ -67,8 +77,8 @@ const Checkout = () => {
         const item = orderBumps.find(ob => ob.id === bumpId);
         return acc + (item ? item.price : 0);
     }, 0);
-    setTotal(BASE_PRICE + bumpsTotal);
-  }, [selectedBumpsIds]);
+    setTotal(basePrice + bumpsTotal);
+  }, [selectedBumpsIds, basePrice]);
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
     const toastId = showLoading("Enviando seu pedido...");
@@ -188,8 +198,8 @@ const Checkout = () => {
                 <div className="space-y-2 rounded-lg bg-gray-100 p-6">
                     <h3 className="text-xl font-semibold mb-4">Resumo do Pedido</h3>
                     <div className="flex justify-between text-lg">
-                        <span>Kit Aventura em Dobro</span>
-                        <span className="font-semibold">{BASE_PRICE.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                        <span>{selectedKit.title}</span>
+                        <span className="font-semibold">{basePrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                     </div>
                     {selectedBumpsIds.map(bumpId => {
                         const item = orderBumps.find(ob => ob.id === bumpId);

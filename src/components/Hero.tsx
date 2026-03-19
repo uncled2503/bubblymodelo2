@@ -7,15 +7,10 @@ import { ProductImageGallery } from "./ProductImageGallery";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
-
-const kits = [
-  { id: 1, title: "Kit Explorador", price: "97,90", originalPrice: "149,90", items: 12, save: null, bestChoice: false, gift: "Toalhinha Mágica que Cresce na Água" },
-  { id: 2, title: "Kit Aventura em Dobro", price: "175,90", originalPrice: "299,80", items: 24, save: "123,90", bestChoice: true, gift: "Toalhinha Mágica + Rede Organizadora para Brinquedos" },
-  { id: 3, title: "Kit Família Mágica", price: "249,90", originalPrice: "449,70", items: 36, save: "199,80", bestChoice: false, gift: "Toalhinha + Rede Organizadora + Livro de Colorir à Prova d'Água" },
-];
+import { kits } from "@/data/kits";
 
 export const Hero = () => {
-  const [selectedKit, setSelectedKit] = useState(kits[1]); // Default to best choice
+  const [selectedKit, setSelectedKit] = useState(kits.find(k => k.bestChoice) || kits[1]);
 
   const productImages = [
     { src: "/images/produto-caixa.png", alt: "Caixa do produto Bomba de Banho Surpresa Oceano" },
@@ -23,6 +18,10 @@ export const Hero = () => {
     { src: "/images/produto-dimensoes.png", alt: "Dimensões da caixa e das bombas de banho" },
     { src: "/images/produto-variedade.png", alt: "Variedade de surpresas e bombas de banho" },
   ];
+
+  if (!selectedKit) {
+    return null; // or a loading state
+  }
 
   return (
     <section id="inicio" className="container max-w-6xl mx-auto py-12 md:py-20">
@@ -102,7 +101,7 @@ export const Hero = () => {
             <span className="text-xl text-gray-400 line-through ml-2">R$ {selectedKit.originalPrice}</span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Link to="/checkout">
+            <Link to={`/checkout?kitId=${selectedKit.id}`}>
               <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg w-full sm:w-auto shine-effect">
                 COMPRAR AGORA
               </Button>
