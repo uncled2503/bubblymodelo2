@@ -123,33 +123,32 @@ const Checkout = () => {
         .filter(Boolean)
         .join(", ") || "";
 
-    const { data: leadData, error: leadError } = await supabase.from("leads").insert({
-        full_name: values.fullName,
-        cpf: values.cpf,
-        email: values.email,
-        phone: values.phone,
-        zip_code: values.zipCode,
-        street: values.street,
-        number: values.number,
-        complement: values.complement,
-        neighborhood: values.neighborhood,
-        city: values.city,
-        state: values.state,
-        order_bumps: selectedBumpsLabels,
-        transaction_id: paymentData.idTransaction,
-        payment_status: 'pending',
-    }).select("id").single();
+    const { data: leadId, error: leadError } = await supabase.rpc('create_lead_and_get_id', {
+        p_full_name: values.fullName,
+        p_cpf: values.cpf,
+        p_email: values.email,
+        p_phone: values.phone,
+        p_zip_code: values.zipCode,
+        p_street: values.street,
+        p_number: values.number,
+        p_complement: values.complement,
+        p_neighborhood: values.neighborhood,
+        p_city: values.city,
+        p_state: values.state,
+        p_order_bumps: selectedBumpsLabels,
+        p_transaction_id: paymentData.idTransaction,
+    });
 
     dismissToast(leadToastId);
 
-    if (leadError || !leadData) {
+    if (leadError || !leadId) {
         showError("Ocorreu um erro ao registrar seu pedido. Tente novamente.");
         console.error("Error inserting lead:", leadError);
         return;
     }
 
     form.reset();
-    navigate('/payment', { state: { paymentData, leadId: leadData.id } });
+    navigate('/payment', { state: { paymentData, leadId: leadId } });
   }
 
   return (
