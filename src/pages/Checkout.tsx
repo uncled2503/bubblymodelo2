@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { showSuccess, showError, showLoading, dismissToast } from "@/utils/toast";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { formatCPF, formatPhone, formatZipCode } from "@/lib/formatters";
 
 const orderBumps = [
     { id: "espuma_banho", label: "Sim, quero adicionar uma espuma de banho mágica que muda de cor por apenas R$ 19,90!", price: 19.90 },
@@ -23,10 +24,10 @@ const orderBumps = [
 
 const checkoutSchema = z.object({
   fullName: z.string().min(3, "Nome completo é obrigatório"),
-  cpf: z.string().min(11, "CPF inválido").max(14, "CPF inválido"),
+  cpf: z.string().min(14, "CPF inválido").max(14, "CPF inválido"),
   email: z.string().email("Email inválido"),
-  phone: z.string().min(10, "Telefone inválido"),
-  zipCode: z.string().min(8, "CEP inválido"),
+  phone: z.string().min(14, "Telefone inválido"),
+  zipCode: z.string().min(9, "CEP inválido"),
   street: z.string().min(3, "Rua é obrigatória"),
   number: z.string().min(1, "Número é obrigatório"),
   complement: z.string().optional(),
@@ -102,19 +103,17 @@ const Checkout = () => {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <div className="space-y-4">
                     <h3 className="text-xl font-semibold">Informações Pessoais</h3>
-                    {/* ... (campos de informações pessoais) ... */}
                     <FormField control={form.control} name="fullName" render={({ field }) => (<FormItem><FormLabel>Nome Completo</FormLabel><FormControl><Input placeholder="Seu nome completo" {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <div className="grid md:grid-cols-2 gap-4">
-                        <FormField control={form.control} name="cpf" render={({ field }) => (<FormItem><FormLabel>CPF</FormLabel><FormControl><Input placeholder="000.000.000-00" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Telefone</FormLabel><FormControl><Input placeholder="(XX) XXXXX-XXXX" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="cpf" render={({ field }) => (<FormItem><FormLabel>CPF</FormLabel><FormControl><Input placeholder="000.000.000-00" {...field} onChange={(e) => field.onChange(formatCPF(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="phone" render={({ field }) => (<FormItem><FormLabel>Telefone</FormLabel><FormControl><Input placeholder="(XX) XXXXX-XXXX" {...field} onChange={(e) => field.onChange(formatPhone(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
                     </div>
                     <FormField control={form.control} name="email" render={({ field }) => (<FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="seu@email.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
 
                 <div className="space-y-4">
                     <h3 className="text-xl font-semibold">Endereço de Envio</h3>
-                    {/* ... (campos de endereço) ... */}
-                    <FormField control={form.control} name="zipCode" render={({ field }) => (<FormItem><FormLabel>CEP</FormLabel><FormControl><Input placeholder="00000-000" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="zipCode" render={({ field }) => (<FormItem><FormLabel>CEP</FormLabel><FormControl><Input placeholder="00000-000" {...field} onChange={(e) => field.onChange(formatZipCode(e.target.value))} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="street" render={({ field }) => (<FormItem><FormLabel>Rua</FormLabel><FormControl><Input placeholder="Nome da sua rua" {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <div className="grid md:grid-cols-3 gap-4">
                         <FormField control={form.control} name="number" render={({ field }) => (<FormItem><FormLabel>Número</FormLabel><FormControl><Input placeholder="123" {...field} /></FormControl><FormMessage /></FormItem>)} />
