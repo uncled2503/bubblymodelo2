@@ -14,12 +14,13 @@ import { showSuccess, showError, showLoading, dismissToast } from "@/utils/toast
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatCPF, formatPhone, formatZipCode } from "@/lib/formatters";
+import { useState, useEffect } from "react";
 
 const orderBumps = [
-    { id: "espuma_banho", label: "Sim, quero adicionar uma espuma de banho mágica que muda de cor por apenas R$ 19,90!", price: 19.90, image: "/images/order-bumps/espuma.png" },
-    { id: "brinquedo_extra", label: "Quero adicionar +2 brinquedos surpresa do oceano por apenas R$ 14,90!", price: 14.90, image: "/images/order-bumps/brinquedos.png" },
-    { id: "adesivos_parede", label: "Transforme o banheiro em um oceano! Leve um kit de adesivos temáticos por R$ 24,90.", price: 24.90, image: "/images/order-bumps/adesivos.png" },
-    { id: "embalagem_presente", label: "Seu pedido é um presente? Adicione nossa embalagem especial com laço por R$ 9,90.", price: 9.90, image: "/images/order-bumps/presente.png" },
+    { id: "espuma_banho", title: "Espuma Mágica que Muda de Cor", description: "Adicione por apenas", price: 19.90, image: "/images/order-bumps/espuma.png" },
+    { id: "brinquedo_extra", title: "+2 Brinquedos Surpresa", description: "Adicione por apenas", price: 14.90, image: "/images/order-bumps/brinquedos.png" },
+    { id: "adesivos_parede", title: "Kit de Adesivos Oceano", description: "Adicione por apenas", price: 24.90, image: "/images/order-bumps/adesivos.png" },
+    { id: "embalagem_presente", title: "Embalagem Especial para Presente", description: "Adicione por apenas", price: 9.90, image: "/images/order-bumps/presente.png" },
 ];
 
 const checkoutSchema = z.object({
@@ -57,10 +58,25 @@ const Checkout = () => {
     },
   });
 
+  const BASE_PRICE = 175.90; // Preço do "Kit Aventura em Dobro"
+  const [total, setTotal] = useState(BASE_PRICE);
+  const selectedBumpsIds = form.watch("orderBumps") || [];
+
+  useEffect(() => {
+    const bumpsTotal = selectedBumpsIds.reduce((acc, bumpId) => {
+        const item = orderBumps.find(ob => ob.id === bumpId);
+        return acc + (item ? item.price : 0);
+    }, 0);
+    setTotal(BASE_PRICE + bumpsTotal);
+  }, [selectedBumpsIds]);
+
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
     const toastId = showLoading("Enviando seu pedido...");
     
-    const selectedBumps = values.orderBumps?.join(", ") || "";
+    const selectedBumpsLabels = values.orderBumps
+        ?.map(id => orderBumps.find(b => b.id === id)?.title)
+        .filter(Boolean)
+        .join(", ") || "";
 
     const { data, error } = await supabase.from("leads").insert({
         full_name: values.fullName,
@@ -74,7 +90,7 @@ const Checkout = () => {
         neighborhood: values.neighborhood,
         city: values.city,
         state: values.state,
-        order_bumps: selectedBumps,
+        order_bumps: selectedBumpsLabels,
     }).select("id").single();
 
     dismissToast(toastId);
@@ -122,12 +138,15 @@ const Checkout = () => {
                     <FormField control={form.control} name="neighborhood" render={({ field }) => (<FormItem><FormLabel>Bairro</FormLabel><FormControl><Input placeholder="Seu bairro" {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <div className="grid md:grid-cols-2 gap-4">
                         <FormField control={form.control} name="city" render={({ field }) => (<FormItem><FormLabel>Cidade</FormLabel><FormControl><Input placeholder="Sua cidade" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="state" render={({ field }) => (<FormItem><FormLabel>Estado</FormLabel><FormControl><Input placeholder="UF" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="state" render={({ field }) => (<FormItem><FormLabel>Estado</FormLabel><FormControl><Input placeholder="UF" {...field} /></FormControl><FormMessage /></FormMessage /></FormItem>)} />
                     </div>
                 </div>
 
                 <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Turbine seu Pedido!</h3>
+                    <div className="text-center">
+                        <h3 className="text-2xl font-extrabold text-teal-600">🔥 Sim, eu quero turbinar meu pedido! 🔥</h3>
+                        <p className="text-gray-600 mt-1">Selecione abaixo para adicionar esses itens exclusivos com um super desconto. <span className="font-bold">Oferta válida apenas nesta página!</span></p>
+                    </div>
                     <FormField
                       control={form.control}
                       name="orderBumps"
@@ -139,32 +158,31 @@ const Checkout = () => {
                               control={form.control}
                               name="orderBumps"
                               render={({ field }) => {
+                                const isChecked = field.value?.includes(item.id);
                                 return (
                                   <FormItem
                                     key={item.id}
-                                    className="flex flex-row items-center gap-4 rounded-md border p-4 bg-amber-50 border-amber-200"
+                                    className={`flex flex-row items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
+                                    onClick={() => {
+                                        const newValue = isChecked
+                                        ? field.value?.filter((value) => value !== item.id)
+                                        : [...(field.value || []), item.id];
+                                        field.onChange(newValue);
+                                    }}
                                   >
-                                    <img src={item.image} alt={item.label} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
-                                    <div className="flex items-start space-x-3 flex-grow">
-                                        <FormControl>
-                                        <Checkbox
-                                            checked={field.value?.includes(item.label)}
-                                            onCheckedChange={(checked) => {
-                                            return checked
-                                                ? field.onChange([...(field.value || []), item.label])
-                                                : field.onChange(
-                                                    field.value?.filter(
-                                                    (value) => value !== item.label
-                                                    )
-                                                )
-                                            }}
-                                            className="mt-1"
-                                        />
-                                        </FormControl>
-                                        <FormLabel className="font-normal text-amber-900 cursor-pointer">
-                                        {item.label}
+                                    <img src={item.image} alt={item.title} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
+                                    <div className="flex-grow">
+                                        <FormLabel className="font-bold text-lg text-gray-800 cursor-pointer">
+                                            {item.title}
                                         </FormLabel>
+                                        <p className="text-gray-600">{item.description} <span className="font-bold text-green-600">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
                                     </div>
+                                    <FormControl>
+                                        <Checkbox
+                                            checked={isChecked}
+                                            className="h-6 w-6"
+                                        />
+                                    </FormControl>
                                   </FormItem>
                                 )
                               }}
@@ -176,8 +194,31 @@ const Checkout = () => {
                     />
                 </div>
 
-                <Button type="submit" size="lg" className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg">
-                  Finalizar Compra e Pagar
+                <div className="space-y-2 rounded-lg bg-gray-100 p-6">
+                    <h3 className="text-xl font-semibold mb-4">Resumo do Pedido</h3>
+                    <div className="flex justify-between text-lg">
+                        <span>Kit Aventura em Dobro</span>
+                        <span className="font-semibold">{BASE_PRICE.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                    </div>
+                    {selectedBumpsIds.map(bumpId => {
+                        const item = orderBumps.find(ob => ob.id === bumpId);
+                        if (!item) return null;
+                        return (
+                            <div key={item.id} className="flex justify-between text-lg text-gray-600">
+                                <span>{item.title}</span>
+                                <span className="font-semibold">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                            </div>
+                        )
+                    })}
+                    <div className="border-t border-gray-300 my-2 !mt-4 !mb-2"></div>
+                    <div className="flex justify-between text-2xl font-bold text-gray-800">
+                        <span>Total</span>
+                        <span>{total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                    </div>
+                </div>
+
+                <Button type="submit" size="lg" className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg h-14 shine-effect">
+                  Finalizar Compra e Pagar {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </Button>
               </form>
             </Form>
