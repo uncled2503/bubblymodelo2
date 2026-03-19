@@ -142,57 +142,48 @@ const Checkout = () => {
                     </div>
                 </div>
 
-                <div className="space-y-4">
-                    <div className="text-center">
-                        <h3 className="text-2xl font-extrabold text-teal-600">🔥 Sim, eu quero turbinar meu pedido! 🔥</h3>
-                        <p className="text-gray-600 mt-1">Selecione abaixo para adicionar esses itens exclusivos com um super desconto. <span className="font-bold">Oferta válida apenas nesta página!</span></p>
-                    </div>
-                    <FormField
-                      control={form.control}
-                      name="orderBumps"
-                      render={() => (
-                        <FormItem className="space-y-4">
-                          {orderBumps.map((item) => (
-                            <FormField
-                              key={item.id}
-                              control={form.control}
-                              name="orderBumps"
-                              render={({ field }) => {
-                                const isChecked = field.value?.includes(item.id);
-                                return (
-                                  <FormItem
-                                    key={item.id}
-                                    className={`flex flex-row items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
-                                    onClick={() => {
-                                        const newValue = isChecked
-                                        ? field.value?.filter((value) => value !== item.id)
-                                        : [...(field.value || []), item.id];
-                                        field.onChange(newValue);
-                                    }}
-                                  >
-                                    <img src={item.image} alt={item.title} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
-                                    <div className="flex-grow">
-                                        <FormLabel className="font-bold text-lg text-gray-800 cursor-pointer">
-                                            {item.title}
-                                        </FormLabel>
-                                        <p className="text-gray-600">{item.description} <span className="font-bold text-green-600">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
-                                    </div>
-                                    <FormControl>
-                                        <Checkbox
-                                            checked={isChecked}
-                                            className="h-6 w-6"
-                                        />
-                                    </FormControl>
-                                  </FormItem>
-                                )
-                              }}
-                            />
-                          ))}
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="orderBumps"
+                  render={({ field }) => (
+                    <FormItem className="space-y-4">
+                        <div className="text-center">
+                            <h3 className="text-2xl font-extrabold text-teal-600">🔥 Sim, eu quero turbinar meu pedido! 🔥</h3>
+                            <p className="text-gray-600 mt-1">Selecione abaixo para adicionar esses itens exclusivos com um super desconto. <span className="font-bold">Oferta válida apenas nesta página!</span></p>
+                        </div>
+                      {orderBumps.map((item) => {
+                        const isChecked = field.value?.includes(item.id);
+                        return (
+                          <FormItem
+                            key={item.id}
+                            className={`flex flex-row items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
+                            onClick={() => {
+                                const newValue = isChecked
+                                ? field.value?.filter((value) => value !== item.id)
+                                : [...(field.value || []), item.id];
+                                field.onChange(newValue);
+                            }}
+                          >
+                            <img src={item.image} alt={item.title} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
+                            <div className="flex-grow">
+                                <FormLabel className="font-bold text-lg text-gray-800 cursor-pointer">
+                                    {item.title}
+                                </FormLabel>
+                                <p className="text-gray-600">{item.description} <span className="font-bold text-green-600">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                            </div>
+                            <FormControl>
+                                <Checkbox
+                                    checked={isChecked}
+                                    className="h-6 w-6"
+                                />
+                            </FormControl>
+                          </FormItem>
+                        )
+                      })}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="space-y-2 rounded-lg bg-gray-100 p-6">
                     <h3 className="text-xl font-semibold mb-4">Resumo do Pedido</h3>
