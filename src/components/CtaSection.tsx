@@ -13,7 +13,7 @@ export const CtaSection = () => {
           Garanta já o seu kit e transforme a hora do banho em uma aventura inesquecível para seus filhos!
         </p>
         <Link to="/checkout">
-          <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg animate-pulse">
+          <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg shine-effect">
             Comprar Agora com Desconto
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>

@@ -19,7 +19,7 @@ export const FeatureSections = () => {
             É simples! Basta encher a banheira, colocar uma de nossas bombas de banho mágicas e observar a efervescência colorida. Em instantes, uma surpresa divertida de um animal marinho aparecerá, transformando a hora do banho em uma aventura inesquecível.
           </p>
           <Link to="/checkout" className="mt-8 inline-block">
-            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg">
+            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg shine-effect">
               Quero o Meu Agora!
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

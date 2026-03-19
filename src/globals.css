@@ -132,3 +132,27 @@
     transform: translate3d(85px, 0, 0);
   }
 }
+
+@layer utilities {
+  .shine-effect {
+    @apply relative overflow-hidden;
+  }
+
+  .shine-effect::before {
+    content: "";
+    @apply absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent;
+    animation: shine 5s infinite;
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -50%;
+  }
+  20% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}

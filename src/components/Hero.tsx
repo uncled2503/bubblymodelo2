@@ -103,7 +103,7 @@ export const Hero = () => {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <Link to="/checkout">
-              <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg w-full sm:w-auto animate-pulse">
+              <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg w-full sm:w-auto shine-effect">
                 COMPRAR AGORA
               </Button>
             </Link>
