@@ -5,22 +5,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// ATENÇÃO: A API Key da Royal Banking deve ser configurada como um segredo no seu projeto Supabase.
-// O nome do segredo deve ser ROYAL_BANKING_API_KEY
 const ROYAL_BANKING_API_KEY = Deno.env.get("ROYAL_BANKING_API_KEY");
 const ROYAL_BANKING_API_URL = "https://api.royalbanking.com.br/v1/gateway/";
-
-// A URL base do seu projeto Supabase.
 const SUPABASE_PROJECT_URL = Deno.env.get("SUPABASE_URL")?.replace(".co", ".in") || "";
 
 serve(async (req) => {
-  // Handle CORS preflight request
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   if (!ROYAL_BANKING_API_KEY) {
-    console.error("[create-pix-payment] ROYAL_BANKING_API_KEY secret is not set in Supabase project.");
+    console.error("[create-pix-payment] ROYAL_BANKING_API_KEY secret is not set.");
     return new Response(JSON.stringify({ error: "Configuration error: API key not found." }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -30,7 +25,6 @@ serve(async (req) => {
   try {
     const { amount, client } = await req.json();
 
-    // Basic validation
     if (!amount || !client || !client.name || !client.document || !client.telefone || !client.email) {
         return new Response(JSON.stringify({ error: "Missing required fields." }), {
             status: 400,
@@ -38,7 +32,6 @@ serve(async (req) => {
         });
     }
 
-    // A API espera CPF e telefone sem formatação
     const cleanDocument = client.document.replace(/\D/g, '');
     const cleanTelefone = client.telefone.replace(/\D/g, '');
 
@@ -55,31 +48,28 @@ serve(async (req) => {
       callbackUrl: `${SUPABASE_PROJECT_URL}/functions/v1/handle-payment-webhook`,
     };
 
-    console.log("[create-pix-payment] Sending payload to Royal Banking:", JSON.stringify(payload, null, 2));
-
     const response = await fetch(ROYAL_BANKING_API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
     const responseData = await response.json();
 
-    if (!response.ok || responseData.status !== 'success' || !responseData.data) {
-      console.error("[create-pix-payment] Error or invalid data from Royal Banking API:", responseData);
-      const errorMessage = responseData.message || "Failed to create PIX payment. Invalid response from gateway.";
+    if (!response.ok || responseData.status !== 'success') {
+      console.error("[create-pix-payment] Error from Royal Banking API:", responseData);
+      const errorMessage = responseData.message || "Failed to create PIX payment.";
       return new Response(JSON.stringify({ error: errorMessage }), {
-        status: response.status,
+        status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
     
     console.log("[create-pix-payment] Successfully created PIX payment.");
 
-    // Retornar apenas o objeto 'data' que contém as informações do pagamento
-    return new Response(JSON.stringify(responseData.data), {
+    // Return the entire successful response object from the gateway
+    return new Response(JSON.stringify(responseData), {
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 

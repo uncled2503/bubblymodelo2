@@ -109,6 +109,13 @@ const Checkout = () => {
         return;
     }
 
+    if (!paymentData.idTransaction || !paymentData.paymentCode || !paymentData.paymentCodeBase64) {
+        dismissToast(paymentToastId);
+        showError("Resposta inválida do gateway de pagamento. Tente novamente.");
+        console.error("Invalid payment data received:", paymentData);
+        return;
+    }
+
     dismissToast(paymentToastId);
     const leadToastId = showLoading("Registrando seu pedido...");
     
@@ -142,7 +149,6 @@ const Checkout = () => {
         return;
     }
 
-    showSuccess("Pedido registrado e PIX gerado com sucesso!");
     form.reset();
     navigate('/payment', { state: { paymentData, leadId: leadData.id } });
   }
