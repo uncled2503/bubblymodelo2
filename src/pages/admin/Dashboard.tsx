@@ -4,9 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download } from 'lucide-react';
+import { Download, Trash2 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { showSuccess, showError } from '@/utils/toast';
 
 // Extensão para o jspdf-autotable
 declare module 'jspdf' {
@@ -64,6 +76,21 @@ const AdminDashboard = () => {
         doc.save('relatorio-leads.pdf');
     };
 
+    const handleDelete = async (leadId: string) => {
+        const { error } = await supabase
+            .from('leads')
+            .delete()
+            .match({ id: leadId });
+
+        if (error) {
+            showError('Erro ao deletar o lead.');
+            console.error('Error deleting lead:', error);
+        } else {
+            setLeads(leads.filter(lead => lead.id !== leadId));
+            showSuccess('Lead deletado com sucesso!');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 p-8">
             <div className="container mx-auto">
@@ -95,6 +122,7 @@ const AdminDashboard = () => {
                                     <TableHead>CPF</TableHead>
                                     <TableHead>Email</TableHead>
                                     <TableHead>Telefone</TableHead>
+                                    <TableHead className="text-right">Ações</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -106,6 +134,32 @@ const AdminDashboard = () => {
                                         <TableCell>{lead.cpf}</TableCell>
                                         <TableCell>{lead.email}</TableCell>
                                         <TableCell>{lead.phone}</TableCell>
+                                        <TableCell className="text-right">
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="ghost" size="icon">
+                                                        <Trash2 className="h-4 w-4 text-red-500" />
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            Essa ação não pode ser desfeita. Isso irá deletar permanentemente o lead.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                        <AlertDialogAction
+                                                            onClick={() => handleDelete(lead.id)}
+                                                            className="bg-red-500 hover:bg-red-600"
+                                                        >
+                                                            Deletar
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
