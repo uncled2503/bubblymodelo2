@@ -80,38 +80,6 @@ const Checkout = () => {
   }, [selectedBumpsIds, basePrice]);
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
-    const toastId = showLoading("Registrando seu pedido...");
-    
-    const selectedBumpsLabels = values.orderBumps
-        ?.map(id => orderBumps.find(b => b.id === id)?.title)
-        .filter(Boolean)
-        .join(", ") || "";
-
-    // 1. Salvar o lead no banco de dados
-    const { data: leadData, error: leadError } = await supabase.from("leads").insert({
-        full_name: values.fullName,
-        cpf: values.cpf,
-        email: values.email,
-        phone: values.phone,
-        zip_code: values.zipCode,
-        street: values.street,
-        number: values.number,
-        complement: values.complement,
-        neighborhood: values.neighborhood,
-        city: values.city,
-        state: values.state,
-        order_bumps: selectedBumpsLabels,
-    }).select("id").single();
-
-    if (leadError || !leadData) {
-        dismissToast(toastId);
-        showError("Ocorreu um erro ao registrar seu pedido. Tente novamente.");
-        console.error("Error inserting lead:", leadError);
-        return;
-    }
-
-    // 2. Gerar o pagamento PIX
-    dismissToast(toastId);
     const paymentToastId = showLoading("Gerando pagamento PIX...");
 
     const { data: paymentData, error: paymentError } = await supabase.functions.invoke('create-pix-payment', {
@@ -126,17 +94,49 @@ const Checkout = () => {
         }
     });
 
-    dismissToast(paymentToastId);
-
     if (paymentError || paymentData.error) {
+        dismissToast(paymentToastId);
         showError(paymentData.error || "Não foi possível gerar o PIX. Verifique seus dados.");
         console.error("Error invoking payment function:", paymentError || paymentData.error);
-    } else {
-        showSuccess("Pagamento PIX gerado com sucesso!");
-        form.reset();
-        // 3. Redirecionar para a página de pagamento com os dados do PIX
-        navigate('/payment', { state: { paymentData, leadId: leadData.id } });
+        return;
     }
+
+    dismissToast(paymentToastId);
+    const leadToastId = showLoading("Registrando seu pedido...");
+    
+    const selectedBumpsLabels = values.orderBumps
+        ?.map(id => orderBumps.find(b => b.id === id)?.title)
+        .filter(Boolean)
+        .join(", ") || "";
+
+    const { data: leadData, error: leadError } = await supabase.from("leads").insert({
+        full_name: values.fullName,
+        cpf: values.cpf,
+        email: values.email,
+        phone: values.phone,
+        zip_code: values.zipCode,
+        street: values.street,
+        number: values.number,
+        complement: values.complement,
+        neighborhood: values.neighborhood,
+        city: values.city,
+        state: values.state,
+        order_bumps: selectedBumpsLabels,
+        transaction_id: paymentData.idTransaction,
+        payment_status: 'pending',
+    }).select("id").single();
+
+    dismissToast(leadToastId);
+
+    if (leadError || !leadData) {
+        showError("Ocorreu um erro ao registrar seu pedido. Tente novamente.");
+        console.error("Error inserting lead:", leadError);
+        return;
+    }
+
+    showSuccess("Pedido registrado e PIX gerado com sucesso!");
+    form.reset();
+    navigate('/payment', { state: { paymentData, leadId: leadData.id } });
   }
 
   return (

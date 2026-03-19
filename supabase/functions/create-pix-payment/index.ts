@@ -51,7 +51,6 @@ serve(async (req) => {
         telefone: cleanTelefone,
         email: client.email,
       },
-      // O webhook será implementado no futuro para confirmar o pagamento automaticamente.
       callbackUrl: `${SUPABASE_PROJECT_URL}/functions/v1/handle-payment-webhook`,
     };
 
