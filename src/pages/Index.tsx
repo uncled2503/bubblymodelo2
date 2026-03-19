@@ -8,6 +8,7 @@ import { WaveSeparator } from "@/components/WaveSeparator";
 import { ProductGallery } from "@/components/ProductGallery";
 import { FeatureSections } from "@/components/FeatureSections";
 import { ScrollAnimation } from "@/components/ScrollAnimation";
+import { CtaSection } from "@/components/CtaSection";
 
 const Index = () => {
   return (
@@ -26,6 +27,9 @@ const Index = () => {
         </ScrollAnimation>
         <ScrollAnimation delay={0.2}>
           <Benefits />
+        </ScrollAnimation>
+        <ScrollAnimation>
+          <CtaSection />
         </ScrollAnimation>
         <ScrollAnimation delay={0.1}>
           <FeatureSections />

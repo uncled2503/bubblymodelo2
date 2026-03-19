@@ -1,7 +1,9 @@
 "use client";
 
-import { AlertTriangle, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ShieldCheck, ArrowRight } from "lucide-react";
 import { LoopingVideo } from "./LoopingVideo";
+import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 export const FeatureSections = () => {
   return (
@@ -16,6 +18,12 @@ export const FeatureSections = () => {
           <p className="text-gray-600 text-lg mt-6 max-w-3xl mx-auto">
             É simples! Basta encher a banheira, colocar uma de nossas bombas de banho mágicas e observar a efervescência colorida. Em instantes, uma surpresa divertida de um animal marinho aparecerá, transformando a hora do banho em uma aventura inesquecível.
           </p>
+          <Link to="/checkout" className="mt-8 inline-block">
+            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg">
+              Quero o Meu Agora!
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
         </div>
 
         {/* Section 1: Hora do Banho, Reinventada */}
