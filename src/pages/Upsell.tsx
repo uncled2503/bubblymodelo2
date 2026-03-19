@@ -12,19 +12,19 @@ const upsellOffers = [
         title: "Clube da Aventura Aquática (Assinatura)",
         description: "Receba um kit novo com temas e surpresas exclusivas todo mês com 25% de desconto!",
         price: "R$ 73,40/mês",
-        image: "/images/produto-variedade.png"
+        image: "/images/upsell/clube-aventura.jpg"
     },
     {
         title: "Kit Anual de Diversão no Banho",
         description: "Garanta a diversão pelo ano inteiro! Leve nosso Mega Kit com 50 bombas de banho, estojo organizador e um roupão infantil temático com 40% OFF.",
         price: "R$ 269,90",
-        image: "/images/produto-caixa.png"
+        image: "/images/upsell/kit-anual.jpg"
     },
     {
         title: "Kit SPA Infantil Completo",
         description: "Adicione nosso Kit SPA com shampoo suave, loção hidratante e sais de banho relaxantes (100% natural) por um preço especial.",
         price: "R$ 89,90",
-        image: "/images/spa-time.png"
+        image: "/images/upsell/kit-spa.jpg"
     }
 ];
 
