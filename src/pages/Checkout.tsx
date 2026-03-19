@@ -18,10 +18,10 @@ import { useMemo } from "react";
 import { kits } from "@/data/kits";
 
 const orderBumps = [
-    { id: "espuma_banho", title: "Espuma Mágica que Muda de Cor", description: "Adicione por apenas", price: 19.90, image: "/images/order-bumps/espuma.png" },
-    { id: "brinquedo_extra", title: "+2 Brinquedos Surpresa", description: "Adicione por apenas", price: 14.90, image: "/images/order-bumps/brinquedos.png" },
-    { id: "adesivos_parede", title: "Kit de Adesivos Oceano", description: "Adicione por apenas", price: 24.90, image: "/images/order-bumps/adesivos.png" },
-    { id: "embalagem_presente", title: "Embalagem Especial para Presente", description: "Adicione por apenas", price: 9.90, image: "/images/order-bumps/presente.png" },
+    { id: "espuma_banho", title: "Espuma Mágica que Muda de Cor", description: "Transforme a água em um show de cores e espuma.", price: 19.90, image: "/images/order-bumps/espuma.png" },
+    { id: "brinquedo_extra", title: "+2 Brinquedos Surpresa", description: "Dobre a diversão com mais dois amiguinhos do oceano.", price: 14.90, image: "/images/order-bumps/brinquedos.png" },
+    { id: "adesivos_parede", title: "Kit de Adesivos Oceano", description: "Decore o banheiro e continue a aventura fora da água.", price: 24.90, image: "/images/order-bumps/adesivos.png" },
+    { id: "embalagem_presente", title: "Embalagem Especial para Presente", description: "Receba em uma caixa linda, pronta para presentear.", price: 9.90, image: "/images/order-bumps/presente.png" },
 ];
 
 const checkoutSchema = z.object({
@@ -166,14 +166,15 @@ const Checkout = () => {
                           <FormLabel
                             key={item.id}
                             htmlFor={item.id}
-                            className={`flex flex-row items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
+                            className={`flex flex-row items-center gap-3 rounded-xl border-2 p-3 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
                           >
-                            <img src={item.image} alt={item.title} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
+                            <img src={item.image} alt={item.title} className="w-16 h-16 rounded-md object-cover flex-shrink-0" />
                             <div className="flex-grow">
-                                <span className="font-bold text-lg text-gray-800">
+                                <span className="font-bold text-base text-gray-800">
                                     {item.title}
                                 </span>
-                                <p className="text-gray-600">{item.description} <span className="font-bold text-green-600">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                                <p className="text-sm text-gray-500 mt-1">{item.description}</p>
+                                <p className="text-sm text-gray-600">Adicione por apenas <span className="font-bold text-green-600">{item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
                             </div>
                             <FormControl>
                                 <Checkbox
@@ -185,7 +186,7 @@ const Checkout = () => {
                                         : field.value?.filter((value) => value !== item.id);
                                         field.onChange(newValue);
                                     }}
-                                    className="h-6 w-6"
+                                    className="h-5 w-5"
                                 />
                             </FormControl>
                           </FormLabel>
