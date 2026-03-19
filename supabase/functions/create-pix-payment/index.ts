@@ -77,7 +77,8 @@ serve(async (req) => {
     
     console.log("[create-pix-payment] Successfully created PIX payment.");
 
-    return new Response(JSON.stringify(responseData), {
+    // Retornar apenas o objeto 'data' que contém as informações do pagamento
+    return new Response(JSON.stringify(responseData.data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
