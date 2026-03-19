@@ -3,8 +3,15 @@
 import { ShoppingCart, Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
+  const navLinks = [
+    { href: "#inicio", label: "Início" },
+    { href: "#oferta", label: "Loja" },
+    { href: "/contato", label: "Contato" },
+  ];
+
   return (
     <>
       <div className="bg-teal-500 text-white text-center text-sm py-2 px-4 font-semibold">
@@ -15,9 +22,9 @@ export const Header = () => {
           {/* Left side: nav on desktop, hamburger on mobile */}
           <div className="flex items-center">
             <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-              <a href="#inicio" className="transition-colors hover:text-teal-500">Início</a>
-              <a href="#oferta" className="transition-colors hover:text-teal-500">Loja</a>
-              <a href="#contato" className="transition-colors hover:text-teal-500">Contato</a>
+              <a href="/#inicio" className="transition-colors hover:text-teal-500">Início</a>
+              <a href="/#oferta" className="transition-colors hover:text-teal-500">Loja</a>
+              <Link to="/contato" className="transition-colors hover:text-teal-500">Contato</Link>
             </nav>
             <Sheet>
               <SheetTrigger asChild className="md:hidden">
@@ -28,9 +35,9 @@ export const Header = () => {
               </SheetTrigger>
               <SheetContent side="left">
                 <nav className="flex flex-col space-y-4 mt-8 text-lg">
-                    <a href="#inicio" className="transition-colors hover:text-teal-500">Início</a>
-                    <a href="#oferta" className="transition-colors hover:text-teal-500">Loja</a>
-                    <a href="#contato" className="transition-colors hover:text-teal-500">Contato</a>
+                    <a href="/#inicio" className="transition-colors hover:text-teal-500">Início</a>
+                    <a href="/#oferta" className="transition-colors hover:text-teal-500">Loja</a>
+                    <Link to="/contato" className="transition-colors hover:text-teal-500">Contato</Link>
                 </nav>
               </SheetContent>
             </Sheet>
