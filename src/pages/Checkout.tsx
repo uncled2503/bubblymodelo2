@@ -246,7 +246,7 @@ const Checkout = () => {
                 </div>
 
                 <Button type="submit" size="lg" className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg h-14 shine-effect">
-                  Finalizar Compra e Pagar com PIX
+                  Finalizar Compra
                 </Button>
               </form>
             </Form>
