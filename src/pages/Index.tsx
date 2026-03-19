@@ -1,6 +1,5 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { Offer } from "@/components/Offer";
 import { Testimonials } from "@/components/Testimonials";
 import { Benefits } from "@/components/Benefits";
 import { Faq } from "@/components/Faq";
@@ -22,9 +21,6 @@ const Index = () => {
           <ProductGallery />
         </ScrollAnimation>
         <WaveSeparator />
-        <ScrollAnimation delay={0.2}>
-          <Offer />
-        </ScrollAnimation>
         <ScrollAnimation delay={0.1}>
           <Testimonials />
         </ScrollAnimation>

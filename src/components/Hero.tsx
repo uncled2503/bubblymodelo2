@@ -1,11 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "./ui/button";
-import { Star, CheckCircle, Flame, Clock } from "lucide-react";
+import { Star, CheckCircle, Flame, Clock, Check } from "lucide-react";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Badge } from "./ui/badge";
+
+const kits = [
+  { id: 1, title: "Kit Explorador", price: "97,90", originalPrice: "149,90", items: 12, save: null, bestChoice: false },
+  { id: 2, title: "Kit Aventura em Dobro", price: "175,90", originalPrice: "299,80", items: 24, save: "123,90", bestChoice: true },
+  { id: 3, title: "Kit Família Mágica", price: "249,90", originalPrice: "449,70", items: 36, save: "199,80", bestChoice: false },
+];
 
 export const Hero = () => {
+  const [selectedKit, setSelectedKit] = useState(kits[1]); // Default to best choice
+
   const productImages = [
     { src: "/images/produto-caixa.png", alt: "Caixa do produto Bomba de Banho Surpresa Oceano" },
     { src: "/images/produto-uso.png", alt: "Criança usando a bomba de banho na banheira" },
@@ -43,9 +54,40 @@ export const Hero = () => {
             </div>
             <span className="text-sm text-gray-500">4.8/5 (2.187 avaliações)</span>
           </div>
+
+          {/* Kit Selector */}
+          <div className="mt-8 space-y-3">
+            {kits.map((kit) => (
+                <div
+                    key={kit.id}
+                    onClick={() => setSelectedKit(kit)}
+                    className={cn(
+                        "border-2 rounded-xl p-4 cursor-pointer transition-all relative",
+                        "flex items-center justify-between gap-4",
+                        selectedKit.id === kit.id ? "border-teal-500 bg-teal-50" : "border-gray-200 hover:border-gray-300"
+                    )}
+                >
+                    {kit.bestChoice && <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-teal-500">Melhor Escolha</Badge>}
+                    <div className="flex items-center gap-4">
+                        <div className={cn(
+                            "w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0",
+                            selectedKit.id === kit.id ? "border-teal-500 bg-teal-500" : "border-gray-300"
+                        )}>
+                            {selectedKit.id === kit.id && <Check className="h-3 w-3 text-white" />}
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-gray-800">{kit.title}</h4>
+                            <p className="text-sm text-gray-500">{kit.items} Bombas de Banho</p>
+                        </div>
+                    </div>
+                    {kit.save && <Badge variant="secondary" className="bg-green-100 text-green-700 flex-shrink-0">Economize R$ {kit.save}</Badge>}
+                </div>
+            ))}
+          </div>
+
           <div className="my-6">
-            <span className="text-4xl font-bold text-teal-600">R$ 97,90</span>
-            <span className="text-xl text-gray-400 line-through ml-2">R$ 149,90</span>
+            <span className="text-4xl font-bold text-teal-600">R$ {selectedKit.price}</span>
+            <span className="text-xl text-gray-400 line-through ml-2">R$ {selectedKit.originalPrice}</span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <Link to="/checkout">
