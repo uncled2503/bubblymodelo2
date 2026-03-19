@@ -12,8 +12,8 @@ export const Header = () => {
       </div>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 max-w-6xl items-center justify-between">
-          <a href="/" className="text-2xl font-bold text-teal-600">
-            Oceano Mágico
+          <a href="/" className="flex items-center">
+            <img src="/images/logotipo.png" alt="Reino do Brinquedo" className="h-14" />
           </a>
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             <a href="#inicio" className="transition-colors hover:text-teal-500">Início</a>
