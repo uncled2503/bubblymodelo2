@@ -4,6 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Download } from 'lucide-react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+// Extensão para o jspdf-autotable
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF;
+  }
+}
 
 const AdminDashboard = () => {
     const [leads, setLeads] = useState<any[]>([]);
@@ -31,6 +41,29 @@ const AdminDashboard = () => {
         navigate('/admin/login');
     };
 
+    const handleDownloadPDF = () => {
+        const doc = new jsPDF();
+        doc.text("Relatório de Leads - Tika Toys", 14, 20);
+
+        const tableColumn = ["Data", "Hora", "Nome", "CPF", "Email", "Telefone"];
+        const tableRows = leads.map(lead => [
+            new Date(lead.created_at).toLocaleDateString(),
+            new Date(lead.created_at).toLocaleTimeString(),
+            lead.full_name,
+            lead.cpf,
+            lead.email,
+            lead.phone
+        ]);
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 30,
+        });
+
+        doc.save('relatorio-leads.pdf');
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 p-8">
             <div className="container mx-auto">
@@ -39,7 +72,13 @@ const AdminDashboard = () => {
                         <img src="/images/logotipo.png" alt="Tika Toys" className="h-12" />
                         <h1 className="text-3xl font-bold">Dashboard de Leads</h1>
                     </div>
-                    <Button onClick={handleLogout} variant="destructive">Sair</Button>
+                    <div className="flex items-center gap-4">
+                        <Button onClick={handleDownloadPDF} variant="outline" disabled={leads.length === 0}>
+                            <Download className="mr-2 h-4 w-4" />
+                            Salvar em PDF
+                        </Button>
+                        <Button onClick={handleLogout} variant="destructive">Sair</Button>
+                    </div>
                 </div>
 
                 <Card>
