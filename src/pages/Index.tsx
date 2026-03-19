@@ -3,11 +3,11 @@ import { Hero } from "@/components/Hero";
 import { Offer } from "@/components/Offer";
 import { Testimonials } from "@/components/Testimonials";
 import { Benefits } from "@/components/Benefits";
-import { Guarantee } from "@/components/Guarantee";
 import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
 import { WaveSeparator } from "@/components/WaveSeparator";
 import { ProductGallery } from "@/components/ProductGallery";
+import { FeatureSections } from "@/components/FeatureSections";
 
 const Index = () => {
   return (
@@ -20,7 +20,7 @@ const Index = () => {
         <Offer />
         <Testimonials />
         <Benefits />
-        <Guarantee />
+        <FeatureSections />
         <Faq />
       </main>
       <Footer />
