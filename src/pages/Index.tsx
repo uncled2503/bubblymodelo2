@@ -6,6 +6,7 @@ import { Benefits } from "@/components/Benefits";
 import { Guarantee } from "@/components/Guarantee";
 import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
+import { WaveSeparator } from "@/components/WaveSeparator";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
+        <WaveSeparator />
         <Offer />
         <Testimonials />
         <Benefits />

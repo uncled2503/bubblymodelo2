@@ -19,7 +19,7 @@ const OfferCard = ({ title, price, originalPrice, save, bestChoice = false, item
 
 export const Offer = () => {
   return (
-    <section id="oferta" className="bg-gray-50 py-16">
+    <section id="oferta" className="bg-gray-50 pt-8 pb-16">
       <div className="container max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-2">Aproveite nossa oferta especial!</h2>
         <p className="text-gray-600 mb-10">Quanto mais você compra, mais você economiza.</p>
