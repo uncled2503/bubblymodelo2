@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Copy, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { showSuccess } from "@/utils/toast";
@@ -96,7 +95,6 @@ const Payment = () => {
           </CardContent>
         </Card>
       </main>
-      <Footer />
     </div>
   );
 };

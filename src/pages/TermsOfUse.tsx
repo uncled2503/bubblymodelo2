@@ -1,5 +1,4 @@
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 
 const TermsOfUse = () => {
   return (
@@ -27,7 +26,6 @@ const TermsOfUse = () => {
           <p>Em nenhum caso o Tika Toys ou seus fornecedores serão responsáveis ​​por quaisquer danos (incluindo, sem limitação, danos por perda de dados ou lucro ou devido a interrupção dos negócios) decorrentes do uso ou da incapacidade de usar os materiais em Tika Toys, mesmo que Tika Toys ou um representante autorizado da Tika Toys tenha sido notificado oralmente ou por escrito da possibilidade de tais danos.</p>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

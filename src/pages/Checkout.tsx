@@ -1,7 +1,6 @@
 "use client";
 
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -267,7 +266,6 @@ const Checkout = () => {
           </CardContent>
         </Card>
       </main>
-      <Footer />
     </div>
   );
 };

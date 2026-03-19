@@ -1,7 +1,6 @@
 "use client";
 
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,6 @@ const ThankYou = () => {
             <Button className="mt-8" size="lg">Voltar para a página inicial</Button>
         </Link>
       </main>
-      <Footer />
     </div>
   );
 };

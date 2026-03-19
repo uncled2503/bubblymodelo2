@@ -1,5 +1,4 @@
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Link } from "react-router-dom";
 
 const PrivacyPolicy = () => {
@@ -26,7 +25,6 @@ const PrivacyPolicy = () => {
           <p>Se tiver alguma dúvida sobre como lidamos com dados do usuário e informações pessoais, entre em <Link to="/contato" className="text-teal-500 hover:underline">contato conosco</Link>.</p>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

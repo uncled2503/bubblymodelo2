@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { showError, showLoading, dismissToast } from "@/utils/toast";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 
 const upsellOffers = [
     {
@@ -91,7 +90,6 @@ const Upsell = () => {
                     Não, obrigado. Talvez na próxima vez.
                 </Button>
             </main>
-            <Footer />
         </div>
     );
 };
