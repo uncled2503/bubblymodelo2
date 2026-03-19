@@ -1,30 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import type { Session } from '@supabase/supabase-js';
 
-const ProtectedRoute = ({ children }) => {
-  const [session, setSession] = useState<any>(null);
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getSession = async () => {
+    const getSessionData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setLoading(false);
     };
 
-    getSession();
+    getSessionData();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (!session && !loading) {
-        navigate('/admin/login');
-      }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, loading]);
+  }, []);
 
   useEffect(() => {
     if (!loading && !session) {
@@ -33,14 +31,14 @@ const ProtectedRoute = ({ children }) => {
   }, [session, loading, navigate]);
 
   if (loading) {
-    return <div>Carregando...</div>; // Ou um componente de spinner
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div>Carregando...</div>
+      </div>
+    );
   }
 
-  if (!session) {
-    return null; // O useEffect já vai redirecionar
-  }
-
-  return children;
+  return session ? <>{children}</> : null;
 };
 
 export default ProtectedRoute;
