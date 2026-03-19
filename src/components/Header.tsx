@@ -39,7 +39,7 @@ export const Header = () => {
           {/* Center: Logo */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <a href="/" className="flex items-center">
-              <img src="/images/logotipo.png" alt="Tika Toys" className="h-24" />
+              <img src="/images/logotipo.png" alt="Tika Toys" className="h-16" />
             </a>
           </div>
 
