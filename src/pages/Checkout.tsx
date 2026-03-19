@@ -164,7 +164,7 @@ const Checkout = () => {
                       {orderBumps.map((item) => {
                         const isChecked = field.value?.includes(item.id);
                         return (
-                          <FormItem
+                          <div
                             key={item.id}
                             className={`flex flex-row items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer ${isChecked ? 'border-teal-500 bg-teal-50 ring-2 ring-teal-200' : 'border-gray-200 bg-white hover:border-gray-300'}`}
                             onClick={() => {
@@ -187,7 +187,7 @@ const Checkout = () => {
                                     className="h-6 w-6"
                                 />
                             </FormControl>
-                          </FormItem>
+                          </div>
                         )
                       })}
                       <FormMessage />
