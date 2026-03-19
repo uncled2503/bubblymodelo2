@@ -16,10 +16,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { formatCPF, formatPhone, formatZipCode } from "@/lib/formatters";
 
 const orderBumps = [
-    { id: "espuma_banho", label: "Sim, quero adicionar uma espuma de banho mágica que muda de cor por apenas R$ 19,90!", price: 19.90 },
-    { id: "brinquedo_extra", label: "Quero adicionar +2 brinquedos surpresa do oceano por apenas R$ 14,90!", price: 14.90 },
-    { id: "adesivos_parede", label: "Transforme o banheiro em um oceano! Leve um kit de adesivos temáticos por R$ 24,90.", price: 24.90 },
-    { id: "embalagem_presente", label: "Seu pedido é um presente? Adicione nossa embalagem especial com laço por R$ 9,90.", price: 9.90 },
+    { id: "espuma_banho", label: "Sim, quero adicionar uma espuma de banho mágica que muda de cor por apenas R$ 19,90!", price: 19.90, image: "/images/order-bumps/espuma.png" },
+    { id: "brinquedo_extra", label: "Quero adicionar +2 brinquedos surpresa do oceano por apenas R$ 14,90!", price: 14.90, image: "/images/order-bumps/brinquedos.png" },
+    { id: "adesivos_parede", label: "Transforme o banheiro em um oceano! Leve um kit de adesivos temáticos por R$ 24,90.", price: 24.90, image: "/images/order-bumps/adesivos.png" },
+    { id: "embalagem_presente", label: "Seu pedido é um presente? Adicione nossa embalagem especial com laço por R$ 9,90.", price: 9.90, image: "/images/order-bumps/presente.png" },
 ];
 
 const checkoutSchema = z.object({
@@ -132,7 +132,7 @@ const Checkout = () => {
                       control={form.control}
                       name="orderBumps"
                       render={() => (
-                        <FormItem>
+                        <FormItem className="space-y-4">
                           {orderBumps.map((item) => (
                             <FormField
                               key={item.id}
@@ -142,25 +142,29 @@ const Checkout = () => {
                                 return (
                                   <FormItem
                                     key={item.id}
-                                    className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-amber-50 border-amber-200"
+                                    className="flex flex-row items-center gap-4 rounded-md border p-4 bg-amber-50 border-amber-200"
                                   >
-                                    <FormControl>
-                                      <Checkbox
-                                        checked={field.value?.includes(item.label)}
-                                        onCheckedChange={(checked) => {
-                                          return checked
-                                            ? field.onChange([...(field.value || []), item.label])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                  (value) => value !== item.label
+                                    <img src={item.image} alt={item.label} className="w-20 h-20 rounded-md object-cover flex-shrink-0" />
+                                    <div className="flex items-start space-x-3 flex-grow">
+                                        <FormControl>
+                                        <Checkbox
+                                            checked={field.value?.includes(item.label)}
+                                            onCheckedChange={(checked) => {
+                                            return checked
+                                                ? field.onChange([...(field.value || []), item.label])
+                                                : field.onChange(
+                                                    field.value?.filter(
+                                                    (value) => value !== item.label
+                                                    )
                                                 )
-                                              )
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormLabel className="font-normal text-amber-900">
-                                      {item.label}
-                                    </FormLabel>
+                                            }}
+                                            className="mt-1"
+                                        />
+                                        </FormControl>
+                                        <FormLabel className="font-normal text-amber-900 cursor-pointer">
+                                        {item.label}
+                                        </FormLabel>
+                                    </div>
                                   </FormItem>
                                 )
                               }}
