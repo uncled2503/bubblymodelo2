@@ -4,49 +4,49 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Juliana S.",
-    text: "Meu filho agora ama tomar banho! Ele fica super ansioso para descobrir a surpresa. Melhor compra do ano!",
-    image: "https://i.pravatar.cc/150?img=25",
+    name: "Mariana F.",
+    text: "Comprei sem muita expectativa e me surpreendi. O produto é ótimo e a entrega foi antes do prazo. As crianças adoraram.",
+    image: "/images/testimonials/mulher1.jpg",
   },
   {
     name: "Ricardo P.",
     text: "A qualidade é incrível e o cheirinho é suave. O banho virou um momento de diversão e tranquilidade aqui em casa.",
-    image: "https://i.pravatar.cc/150?img=32",
+    image: "/images/testimonials/homem1.jpg",
+  },
+  {
+    name: "Sofia R.",
+    text: "Minha sobrinha amou o presente! A caixa é linda e as bombas de banho são muito cheirosas. Sucesso total!",
+    image: "/images/testimonials/mulher2.jpg",
+  },
+  {
+    name: "Carlos M.",
+    text: "Nunca pensei que diria isso, mas meu filho pede para tomar banho agora. Mágico!",
+    image: "/images/testimonials/homem2.jpg",
+  },
+  {
+    name: "Beatriz C.",
+    text: "As surpresas são muito fofas e bem feitas. Minha filha está montando uma coleção dos animais marinhos.",
+    image: "/images/testimonials/mulher3.jpg",
+  },
+  {
+    name: "Lucas A.",
+    text: "Produto excelente. Não irrita a pele e deixa um cheirinho delicioso. Recomendo!",
+    image: "/images/testimonials/homem3.jpg",
+  },
+  {
+    name: "Juliana S.",
+    text: "Meu filho agora ama tomar banho! Ele fica super ansioso para descobrir a surpresa. Melhor compra do ano!",
+    image: "/images/testimonials/mulher4.jpg",
+  },
+  {
+    name: "Pedro H.",
+    text: "Valeu cada centavo. A hora do banho era uma luta, agora é uma festa. Os brinquedos são de boa qualidade.",
+    image: "/images/testimonials/homem4.jpg",
   },
   {
     name: "Fernanda L.",
     text: "Chegou super rápido! As crianças ficaram enlouquecidas. Já vou comprar o próximo kit.",
     image: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    name: "Carlos M.",
-    text: "Nunca pensei que diria isso, mas meu filho pede para tomar banho agora. Mágico!",
-    image: "https://i.pravatar.cc/150?img=56",
-  },
-  {
-    name: "Beatriz C.",
-    text: "As surpresas são muito fofas e bem feitas. Minha filha está montando uma coleção dos animais marinhos.",
-    image: "https://i.pravatar.cc/150?img=45",
-  },
-  {
-    name: "Lucas A.",
-    text: "Produto excelente. Não irrita a pele e deixa um cheirinho delicioso. Recomendo!",
-    image: "https://i.pravatar.cc/150?img=10",
-  },
-  {
-    name: "Mariana F.",
-    text: "Comprei sem muita expectativa e me surpreendi. O produto é ótimo e a entrega foi antes do prazo. As crianças adoraram.",
-    image: "https://i.pravatar.cc/150?img=1",
-  },
-  {
-    name: "Pedro H.",
-    text: "Valeu cada centavo. A hora do banho era uma luta, agora é uma festa. Os brinquedos são de boa qualidade.",
-    image: "https://i.pravatar.cc/150?img=7",
-  },
-  {
-    name: "Sofia R.",
-    text: "Minha sobrinha amou o presente! A caixa é linda e as bombas de banho são muito cheirosas. Sucesso total!",
-    image: "https://i.pravatar.cc/150?img=8",
   },
   {
     name: "Gabriel T.",
@@ -58,7 +58,7 @@ const testimonials = [
 const TestimonialCard = ({ name, text, image }) => (
   <li className="mx-4 flex-shrink-0 w-[350px] bg-white p-6 rounded-3xl shadow-lg">
     <div className="flex items-center mb-4">
-      <img src={image} alt={name} className="w-12 h-12 rounded-full mr-4" />
+      <img src={image} alt={name} className="w-12 h-12 rounded-full mr-4 object-cover" />
       <div>
         <p className="font-bold text-gray-800">{name}</p>
         <div className="flex text-yellow-400">
