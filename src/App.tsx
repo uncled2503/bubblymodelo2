@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Upsell from "./pages/Upsell";
 import ThankYou from "./pages/ThankYou";
+import Payment from "./pages/Payment";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/termos-de-uso" element={<TermsOfUse />} />
           <Route path="/contato" element={<Contact />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/upsell/:leadId" element={<Upsell />} />
           <Route path="/thank-you" element={<ThankYou />} />
 

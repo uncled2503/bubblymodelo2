@@ -80,14 +80,15 @@ const Checkout = () => {
   }, [selectedBumpsIds, basePrice]);
 
   async function onSubmit(values: z.infer<typeof checkoutSchema>) {
-    const toastId = showLoading("Enviando seu pedido...");
+    const toastId = showLoading("Registrando seu pedido...");
     
     const selectedBumpsLabels = values.orderBumps
         ?.map(id => orderBumps.find(b => b.id === id)?.title)
         .filter(Boolean)
         .join(", ") || "";
 
-    const { data, error } = await supabase.from("leads").insert({
+    // 1. Salvar o lead no banco de dados
+    const { data: leadData, error: leadError } = await supabase.from("leads").insert({
         full_name: values.fullName,
         cpf: values.cpf,
         email: values.email,
@@ -102,15 +103,39 @@ const Checkout = () => {
         order_bumps: selectedBumpsLabels,
     }).select("id").single();
 
-    dismissToast(toastId);
+    if (leadError || !leadData) {
+        dismissToast(toastId);
+        showError("Ocorreu um erro ao registrar seu pedido. Tente novamente.");
+        console.error("Error inserting lead:", leadError);
+        return;
+    }
 
-    if (error || !data) {
-        showError("Ocorreu um erro ao enviar seu pedido. Tente novamente.");
-        console.error("Error inserting lead:", error);
+    // 2. Gerar o pagamento PIX
+    dismissToast(toastId);
+    const paymentToastId = showLoading("Gerando pagamento PIX...");
+
+    const { data: paymentData, error: paymentError } = await supabase.functions.invoke('create-pix-payment', {
+        body: {
+            amount: total,
+            client: {
+                name: values.fullName,
+                document: values.cpf,
+                telefone: values.phone,
+                email: values.email,
+            }
+        }
+    });
+
+    dismissToast(paymentToastId);
+
+    if (paymentError || paymentData.error) {
+        showError(paymentData.error || "Não foi possível gerar o PIX. Verifique seus dados.");
+        console.error("Error invoking payment function:", paymentError || paymentData.error);
     } else {
-        showSuccess("Seu pedido foi recebido! Só mais um passo...");
+        showSuccess("Pagamento PIX gerado com sucesso!");
         form.reset();
-        navigate(`/upsell/${data.id}`);
+        // 3. Redirecionar para a página de pagamento com os dados do PIX
+        navigate('/payment', { state: { paymentData, leadId: leadData.id } });
     }
   }
 
@@ -221,7 +246,7 @@ const Checkout = () => {
                 </div>
 
                 <Button type="submit" size="lg" className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg h-14 shine-effect">
-                  Finalizar Compra
+                  Finalizar Compra e Pagar com PIX
                 </Button>
               </form>
             </Form>
