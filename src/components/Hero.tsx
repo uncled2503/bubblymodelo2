@@ -59,7 +59,7 @@ export const Hero = () => {
         </div>
         <div className="order-1 md:order-2">
           <img
-            src="https://placehold.co/600x500/81E6D9/333333?text=Produto+Incr%C3%ADvel&font=sans"
+            src="/images/produto-caixa.png"
             alt="Bomba de Banho Surpresa Oceano"
             className="rounded-2xl shadow-2xl w-full"
           />
