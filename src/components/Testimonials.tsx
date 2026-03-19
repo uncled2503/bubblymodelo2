@@ -1,34 +1,78 @@
 "use client";
 
 import { Star } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+
+const testimonials = [
+  {
+    name: "Juliana S.",
+    text: "Meu filho agora ama tomar banho! Ele fica super ansioso para descobrir a surpresa. Melhor compra do ano!",
+    image: "https://i.pravatar.cc/150?img=1",
+  },
+  {
+    name: "Ricardo P.",
+    text: "A qualidade é incrível e o cheirinho é suave. O banho virou um momento de diversão e tranquilidade aqui em casa.",
+    image: "https://i.pravatar.cc/150?img=3",
+  },
+  {
+    name: "Fernanda L.",
+    text: "Chegou super rápido! As crianças ficaram enlouquecidas. Já vou comprar o próximo kit.",
+    image: "https://i.pravatar.cc/150?img=5",
+  },
+  {
+    name: "Carlos M.",
+    text: "Nunca pensei que diria isso, mas meu filho pede para tomar banho agora. Mágico!",
+    image: "https://i.pravatar.cc/150?img=7",
+  },
+  {
+    name: "Beatriz C.",
+    text: "As surpresas são muito fofas e bem feitas. Minha filha está montando uma coleção dos animais marinhos.",
+    image: "https://i.pravatar.cc/150?img=8",
+  },
+  {
+    name: "Lucas A.",
+    text: "Produto excelente. Não irrita a pele e deixa um cheirinho delicioso. Recomendo!",
+    image: "https://i.pravatar.cc/150?img=10",
+  },
+];
 
 const TestimonialCard = ({ name, text, image }) => (
-    <Card className="shadow-lg border-none rounded-xl">
-        <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-                <img src={image} alt={name} className="w-12 h-12 rounded-full mr-4" />
-                <div>
-                    <p className="font-bold">{name}</p>
-                    <div className="flex text-yellow-400">
-                        <Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" /><Star className="h-4 w-4" />
-                    </div>
-                </div>
-            </div>
-            <p className="text-gray-600">"{text}"</p>
-        </CardContent>
-    </Card>
-)
+  <li className="mx-4 flex-shrink-0 w-[350px] bg-white p-6 rounded-3xl shadow-lg">
+    <div className="flex items-center mb-4">
+      <img src={image} alt={name} className="w-12 h-12 rounded-full mr-4" />
+      <div>
+        <p className="font-bold text-gray-800">{name}</p>
+        <div className="flex text-yellow-400">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="h-4 w-4 fill-current" />
+          ))}
+        </div>
+      </div>
+    </div>
+    <p className="text-gray-600 italic">"{text}"</p>
+  </li>
+);
 
 export const Testimonials = () => {
+  const firstRow = testimonials.slice(0, testimonials.length / 2);
+  const secondRow = testimonials.slice(testimonials.length / 2);
+
   return (
-    <section className="py-16">
+    <section className="py-20 bg-gray-50 overflow-hidden">
       <div className="container max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-10">O que os pais estão dizendo</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <TestimonialCard name="Juliana S." text="Meu filho agora ama tomar banho! Ele fica super ansioso para descobrir a surpresa. Melhor compra do ano!" image="https://placehold.co/100x100/FFC0CB/333333?text=JS" />
-            <TestimonialCard name="Ricardo P." text="A qualidade é incrível e o cheirinho é suave. O banho virou um momento de diversão e tranquilidade aqui em casa." image="https://placehold.co/100x100/87CEEB/333333?text=RP" />
-            <TestimonialCard name="Fernanda L." text="Chegou super rápido! As crianças ficaram enlouquecidas. Já vou comprar o próximo kit." image="https://placehold.co/100x100/98FB98/333333?text=FL" />
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-gray-800">
+          O que nossos clientes <span className="text-teal-500">amam</span> no produto
+        </h2>
+      </div>
+      <div className="relative flex flex-col gap-8 -rotate-2">
+        <div className="flex w-max animate-marquee items-center hover:[animation-play-state:paused]">
+            {[...firstRow, ...firstRow].map((testimonial, index) => (
+                <TestimonialCard key={index} {...testimonial} />
+            ))}
+        </div>
+        <div className="flex w-max animate-marquee-reverse items-center hover:[animation-play-state:paused]">
+            {[...secondRow, ...secondRow].map((testimonial, index) => (
+                <TestimonialCard key={index} {...testimonial} />
+            ))}
         </div>
       </div>
     </section>
