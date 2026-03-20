@@ -67,11 +67,11 @@ const Upsell = () => {
 
         const toastId = showLoading("Atualizando seu pedido e gerando PIX...");
 
-        const { data: lead, error: leadFetchError } = await supabase
-            .from('leads')
-            .select('full_name, cpf, phone, email')
-            .eq('id', leadId)
-            .single();
+        const { data: leadData, error: leadFetchError } = await supabase.rpc('get_lead_details', {
+            p_lead_id: leadId
+        });
+
+        const lead = leadData && leadData.length > 0 ? leadData[0] : null;
 
         if (leadFetchError || !lead) {
             dismissToast(toastId);
@@ -102,10 +102,19 @@ const Upsell = () => {
             return;
         }
 
-        await supabase
-            .from("leads")
-            .update({ upsell_offer: acceptedOfferTitles })
-            .eq("id", leadId);
+        const { error: updateError } = await supabase.rpc('add_upsell_to_lead', {
+            p_lead_id: leadId,
+            p_upsell_offer: acceptedOfferTitles,
+            p_upsell_transaction_id: paymentData.idTransaction
+        });
+
+        if (updateError) {
+            // The PIX was generated, but we couldn't save the info.
+            // This is a problem, but we should still let the user pay.
+            // Log the error and continue.
+            console.error("Critical: Failed to update lead with upsell info:", updateError);
+            showError("Não foi possível salvar os itens extras no seu pedido, mas o PIX foi gerado. Por favor, continue com o pagamento.");
+        }
         
         dismissToast(toastId);
         

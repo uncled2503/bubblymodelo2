@@ -31,15 +31,31 @@ serve(async (req) => {
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
       );
 
-      const { error } = await supabaseAdmin
+      // Try to update based on the main transaction ID first
+      const { data: mainLead, error: mainError } = await supabaseAdmin
         .from('leads')
         .update({ payment_status: 'paid' })
-        .eq('transaction_id', idTransaction);
+        .eq('transaction_id', idTransaction)
+        .select('id')
+        .single();
 
-      if (error) {
-        console.error(`[handle-payment-webhook] Error updating lead for transaction ${idTransaction}:`, error);
+      // PGRST116 means no rows were found, which is not an error in this case.
+      if (mainError && mainError.code !== 'PGRST116') {
+        console.error(`[handle-payment-webhook] Error updating lead by main transaction_id ${idTransaction}:`, mainError);
+      } else if (mainLead) {
+        console.log(`[handle-payment-webhook] Successfully updated lead for main transaction ${idTransaction} to 'paid'.`);
       } else {
-        console.log(`[handle-payment-webhook] Successfully updated lead for transaction ${idTransaction} to 'paid'.`);
+        // If no lead was updated, try updating based on the upsell transaction ID
+        const { error: upsellError } = await supabaseAdmin
+          .from('leads')
+          .update({ upsell_payment_status: 'paid' })
+          .eq('upsell_transaction_id', idTransaction);
+
+        if (upsellError) {
+          console.error(`[handle-payment-webhook] Error updating lead by upsell_transaction_id ${idTransaction}:`, upsellError);
+        } else {
+          console.log(`[handle-payment-webhook] Successfully updated lead for upsell transaction ${idTransaction} to 'paid'.`);
+        }
       }
     } else {
         console.log(`[handle-payment-webhook] Received non-paid status '${status}' for transaction ${idTransaction}. No action taken.`);
